@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STOPWATCH</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>STOPWATCH</h1>
+        <p class="time">
+        <span id="minutes">00</span>:<span id="seconds">00</span>:<span id="tens">00</span>
+         </p>
+        <button id="start">START</button>
+        <button id="stop">STOP</button>
+        <button id="reset">RESET</button>
+        <button id="lap">LAP</button>
+        <div id="laps"></div>
+    </div>
+</body>
+<script>
+        window.onload=function(){
+        let minutes=0;
+        let seconds=0;
+        let tens= 0;
+        let appendminutes=document.querySelector('#minutes');
+        let appendseconds=document.querySelector('#seconds');
+        let appendtens=document.querySelector('#tens');
+        let startbtn=document.querySelector('#start');
+        let stopbtn=document.querySelector('#stop');
+        let resetbtn=document.querySelector('#reset');
+        const lapBtn = document.querySelector('#lap');
+        const lapsContainer = document.querySelector('#laps');
+        let interval;
+    
+        const starttimer=()=>{
+            tens++;
+            if(tens <=9 ){
+                appendtens.innerHTML='0'+tens;
+    
+            }
+            if(tens>9){
+                appendtens.innerHTML=tens;
+            }
+            if(tens>99){
+                seconds++;
+                appendseconds.innerHTML='0'+seconds;
+                tens=0;
+                appendtens.innerHTML='0'+0;
+            }
+                if(seconds>9){
+                    appendseconds.innerHTML=seconds;
+                }
+                if(seconds>59){
+                    minutes++;
+                    appendminutes.innerHTML='0'+minutes;
+                    seconds=0;
+                    appendseconds.innerHTML='0'+0;
+                }
+            };
+            startbtn.onclick = () => {
+               clearInterval(interval);
+                interval=setInterval(starttimer,10);
+            };
+            stopbtn.onclick=()=>{
+                clearInterval(interval);
+            };
+            
+
+            resetbtn.onclick = () => {
+                clearInterval(interval);
+                tens = 0;
+                seconds = 0;
+                minutes = 0;
+                appendtens.innerHTML = '00';
+                appendseconds.innerHTML = '00';
+                appendminutes.innerHTML = '00';
+                lapsContainer.innerHTML = ''; 
+            };
+            lapBtn.onclick = () => {
+                if (minutes === 0 && seconds === 0 && tens === 0) return;
+                const lapTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(tens).padStart(2, '0')}`;
+                const lapItem = document.createElement('div'); 
+                lapItem.classList.add('lap-item'); 
+                lapItem.innerText = `Lap ${lapsContainer.children.length + 1}: ${lapTime}`; 
+                lapsContainer.appendChild(lapItem); 
+            };    
+        };
+</script>
+
+</html>
